@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Sugarbliss Delivery</title>
+</head>
+
+<body>
+  <div id="vue-instance">
+
+    <div class="jumbotron">
+      <h3 class="display-4">Sugar Bliss Calculator</h1>
+        </p>
+    </div>
+
+    <div class="form-container form-group">
+
+      <div class='config-items row'>
+        <div class='config-item col-md-2 col-centered' v-for="item in configItems" :key="item.model">
+          <label class='config-item-label'>  {{item.label}}  </label>
+          <input class="form-control" v-bind:type="item.inputType" v-bind:name="item.model" v-model='item.value'>
+        </div>
+      </div>
+
+      <div class='food-items row'>
+        <div class='food-item col-md-2' v-for="item in foodItems" :key="item.model">
+          <label class='food-item-label'> {{item.displayName}} </label>
+          <input class='food-item-input form-control' type="number" v-model="item.value" v-bind:placeholder="item.hint" min="0" >
+        </div>
+      </div>
+
+      <div class="text-center submit">
+        <button class="btn btn-primary" v-on:click="postInformation">Calculate Carrier and Price</button>
+      </div>
+
+      <div v-if="vendor.length">
+
+        <h4><u>Final Price</u></h4>
+
+        <div class="row">
+          <h5 class='col-md-4'>{{vendor}}</h5>
+          <h5 class='col-md-4'>${{price}}</h5>
+        </div>
+
+      </div>
+
+
+      <div v-if="carrierItems.length">
+        <h4><u>Base Price</u></h4>
+
+        <div class="row">
+          <h5 class='col-md-4'>Carrier</h5>
+          <h5 class='col-md-4'>Price</h5>
+        </div>
+
+        <div class='result row' v-for='item in carrierItems'>
+          <label class='category col-md-4'>{{item.carrier}}</label>
+          <div class='category-result col-md-4'>${{item.price}}</div>
+          <div class='col-md-4' v-if="!item">
+            Could not calculate base price.
+          </div>
+        </div>
+      </div>
+
+      <div v-if="foodItemsRes.length">
+        <h4><u>Food Items</u></h4>
+        <div class="row">
+          <h5 class='col-md-4'>Name</h5>
+          <h5 class='col-md-4'>USM</h5>
+          <h5 class='col-md-4'>LS</h5>
+        </div>
+
+        <div class='result row' v-for='item in foodItemsRes'>
+          <p class='col-md-4'>{{item.name}}</p>
+          <p class='col-md-4'>{{item.usm}}</p>
+          <p class='col-md-4'>{{item.ls}}</p>
+        </div>
+
+        <div class='result row' >
+          <p class='col-md-4'>Total</p>
+          <p class='col-md-4'>{{usmSum}}</p>
+          <p class='col-md-4'>{{ldSum}}</p>
+        </div>
+
+      </div>
+
+      <div v-if="custom.length">
+        <h4><u>Custom Price Needed For</u></h4>
+        <div class="row result">
+          <div class='col-md-2' v-for='item in custom'>
+            {{item}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script src="asset_dist/bundle.js"></script>
+</body>
+
+</html>
