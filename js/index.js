@@ -5,6 +5,7 @@ import 'bootstrap';
 
 import '../style/index.scss';
 
+
 var vm = new Vue({
   el: '#vue-instance',
   methods: {
@@ -32,7 +33,8 @@ var vm = new Vue({
 
       const data = this.processInformation();
 
-      const promise = axios.post('/submit', data);
+      const URL = 'https://1kt0lzjnq1.execute-api.us-east-1.amazonaws.com/api/submit'
+      const promise = axios.post(URL, data);
       
       const that = this;
 
