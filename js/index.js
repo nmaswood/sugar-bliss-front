@@ -130,7 +130,7 @@ var vm = new Vue({
         {
           'model': 'dateTime',
           'label': 'Enter the date.',
-          'inputType': 'datetime-local',
+          'inputType': 'date',
           'value': asString
         }
       ],

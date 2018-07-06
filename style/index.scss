@@ -1,8 +1,18 @@
 @import "~bootstrap/scss/bootstrap";
-.submit  {
+
+.submit {
     margin-top: 30px;
 }
-.form-container{
+
+.form-container {
     margin-left: 10px;
 }
 
+.food-items {
+    margin-left: 4px;
+}
+
+#times {
+    width:300px;
+    margin-top:5px;
+}
