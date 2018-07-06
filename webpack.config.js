@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const config = {
   entry: __dirname + '/js/index.js',
   output: {
-    path: __dirname + '/asset_dist',
+    path: __dirname + '/sugar/asset_dist',
     filename: 'bundle.js',
   },
   resolve: {
