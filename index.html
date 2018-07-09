@@ -18,177 +18,179 @@
           <label class='config-item-label'>{{item.label}}</label> <input class="form-control" v-bind:type="item.inputType" v-bind:name="item.model" v-model='item.value'>
         </div>
 
+
         <div class='col-md-2'>
-          <label class='config-item-label'>Time</label>
-          <select id='times' >
-          <option value="8am-9am">
-            8am-9am
-          </option>
+          <label class='config-item-label'>Time</label> <select id='times' v-model:value='time'>
+            <option value="7am-8am">
+              7am-8am
+            </option>
 
-          <option value="8am-10am">
-            8am-10am
-          </option>
+            <option value="7am-9am">
+              7am-9am
+            </option>
 
-          <option value="9am-10am">
-            9am-10am
-          </option>
+            <option value="8am-9am">
+              8am-9am
+            </option>
 
-          <option value="9am-11am">
-            9am-11am
-          </option>
+            <option value="8am-10am">
+              8am-10am
+            </option>
 
-          <option value="10am-11am">
-            10am-11am
-          </option>
+            <option value="9am-10am">
+              9am-10am
+            </option>
 
-          <option value="10am-12am">
-            10am-12am
-          </option>
+            <option value="9am-11am">
+              9am-11am
+            </option>
 
-          <option value="11am-12pm">
-            11am-12pm
-          </option>
+            <option value="10am-11am">
+              10am-11am
+            </option>
 
-          <option value="12pm-1pm">
-            12pm-1pm
-          </option>
+            <option value="10am-12pm">
+              10am-12pm
+            </option>
 
-          <option value="12pm-2pm">
-            12pm-2pm
-          </option>
+            <option value="11am-12pm">
+              11am-12pm
+            </option>
 
-          <option value="1pm-2pm">
-            1pm-2pm
-          </option>
+            <option value="12pm-1pm">
+              12pm-1pm
+            </option>
 
-          <option value="1pm-3pm">
-            1pm-3pm
-          </option>
+            <option value="12pm-2pm">
+              12pm-2pm
+            </option>
 
-          <option value="2pm-3pm">
-            2pm-3pm
-          </option>
+            <option value="1pm-2pm">
+              1pm-2pm
+            </option>
 
-          <option value="2pm-4pm">
-            2pm-4pm
-          </option>
+            <option value="1pm-3pm">
+              1pm-3pm
+            </option>
 
-          <option value="3pm-4pm">
-            3pm-4pm
-          </option>
+            <option value="2pm-3pm">
+              2pm-3pm
+            </option>
 
-          <option value="3pm-5pm">
-            3pm-5pm
-          </option>
+            <option value="2pm-4pm">
+              2pm-4pm
+            </option>
 
-          <option value="4pm-5pm">
-            4pm-5pm
-          </option>
-        </select>
-      </div>
+            <option value="3pm-4pm">
+              3pm-4pm
+            </option>
 
+            <option value="3pm-5pm">
+              3pm-5pm
+            </option>
 
-      <div class='food-items row'>
-        <div class='food-item col-md-2' v-for="item in foodItems">
-          <label class='food-item-label'>{{item.displayName}}</label> <input class='food-item-input form-control' type="number" v-model="item.value" v-bind:placeholder="item.hint" min="0">
-        </div>
-      </div>
-
-
-      <div class="text-center submit">
-        <button class="btn btn-primary" v-on:click="postInformation">Calculate Carrier and Price</button>
-      </div>
-
-
-      <div v-if="vendor.length">
-        <h4><u>Final Price</u>
-        </h4>
-
-
-        <div class="row">
-          <h5 class='col-md-4'>{{vendor}}</h5>
-
-
-          <h5 class='col-md-4'>${{price}}</h5>
-        </div>
-      </div>
-
-
-      <div v-if="carrierItems.length">
-        <h4><u>Base Price</u>
-        </h4>
-
-
-        <div class="row">
-          <h5 class='col-md-4'>Carrier</h5>
-
-
-          <h5 class='col-md-4'>Price</h5>
+            <option value="4pm-5pm">
+              4pm-5pm
+            </option>
+          </select>
         </div>
 
 
-        <div class='result row' v-for='item in carrierItems'>
-          <label class='category col-md-4'>{{item.carrier}}</label>
+        <div class='food-items row'>
+          <div class='food-item col-md-2' v-for="item in foodItems">
+            <label class='food-item-label'>{{item.displayName}}</label> <input class='food-item-input form-control' type="number" v-model="item.value" v-bind:placeholder="item.hint" min="0">
+          </div>
+        </div>
 
-          <div class='category-result col-md-4'>
-            ${{item.price}}
+
+        <div class="text-center submit">
+          <button class="btn btn-primary" v-on:click="postInformation">Calculate Carrier and Price</button>
+        </div>
+
+
+        <div v-if="carrierItems.length">
+          <h4><u>Base Price</u>
+          </h4>
+
+
+          <div class="row">
+            <h5 class='col-md-4'>Carrier</h5>
+
+
+            <h5 class='col-md-4'>Price</h5>
           </div>
 
 
-          <div class='col-md-4' v-if="!item">
-            Could not calculate base price.
+          <div class='result row' v-for='item in carrierItems'>
+            <label class='category col-md-4'>{{item.carrier}}</label>
+
+            <div class='category-result col-md-4'>
+              ${{item.price}}
+            </div>
+
+
+            <div class='col-md-4' v-if="!item">
+              Could not calculate base price.
+            </div>
           </div>
         </div>
-      </div>
 
 
-      <div v-if="foodItemsRes.length">
-        <h4><u>Food Items</u>
-        </h4>
+        <div v-if="foodItemsRes.length">
+          <h4><u>Food Items</u>
+          </h4>
 
 
-        <div class="row">
-          <h5 class='col-md-4'>Name</h5>
+          <div class="row">
+            <h5 class='col-md-4'>Name</h5>
 
 
-          <h5 class='col-md-4'>USM</h5>
+            <h5 class='col-md-4'>USM</h5>
 
 
-          <h5 class='col-md-4'>LS</h5>
+            <h5 class='col-md-4'>LS</h5>
+          </div>
+
+
+          <div class='result row' v-for='item in foodItemsRes'>
+            <p class='col-md-4'>{{item.name}}</p>
+
+
+            <p class='col-md-4'>{{item.usm}}</p>
+
+
+            <p class='col-md-4'>{{item.ls}}</p>
+          </div>
+
+
+          <div class='result row'>
+            <p class='col-md-4'>Total</p>
+
+
+            <p class='col-md-4'>{{usmSum}}</p>
+
+
+            <p class='col-md-4'>{{ldSum}}</p>
+          </div>
         </div>
 
 
-        <div class='result row' v-for='item in foodItemsRes'>
-          <p class='col-md-4'>{{item.name}}</p>
-
-
-          <p class='col-md-4'>{{item.usm}}</p>
-
-
-          <p class='col-md-4'>{{item.ls}}</p>
+        <div v-if="errors.length">
+          <div class='error' v-for='error in errors'>
+            <p>{{error}}</p>
+          </div>
         </div>
 
 
-        <div class='result row'>
-          <p class='col-md-4'>Total</p>
+        <div v-if="custom.length">
+          <h4><u>Custom Price Needed For</u>
+          </h4>
 
 
-          <p class='col-md-4'>{{usmSum}}</p>
-
-
-          <p class='col-md-4'>{{ldSum}}</p>
-        </div>
-      </div>
-
-
-      <div v-if="custom.length">
-        <h4><u>Custom Price Needed For</u>
-        </h4>
-
-
-        <div class="row result">
-          <div class='col-md-2' v-for='item in custom'>
-            {{item}}
+          <div class="row result">
+            <div class='col-md-2' v-for='item in custom'>
+              {{item}}
+            </div>
           </div>
         </div>
       </div>

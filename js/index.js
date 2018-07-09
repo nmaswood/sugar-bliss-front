@@ -11,41 +11,50 @@ var vm = new Vue({
   methods: {
     processInformation: function() {
 
-      const values = {}
+      const values = {};
 
-      this.foodItems.forEach((x) => values[x.model] = x.value || 0)
-      this.configItems.forEach((x) => values[x.model] = x.value)
+      this.foodItems.forEach((x) => values[x.model] = x.value || 0);
+      this.configItems.forEach((x) => values[x.model] = x.value);
+
+      if (this.time.toString() == '[object Object]'){
+        values.time = '';
+      } else {
+        values.time = this.time;
+      }
+      debugger;
 
       return values;
     },
 
     postInformation: function() {
-      const errors = this.validateData(this.form);
-
-      if (errors.length) {
-        console.log(errors);
-        return;
-      }
 
       this.carrierItems = [];
       this.foodItemsRes = [];
       this.custom = [];
+      this.errors = [];
 
       const data = this.processInformation();
 
-      const URL = 'https://1kt0lzjnq1.execute-api.us-east-1.amazonaws.com/api/submit'
+      const URL = 'https://z9cherqts7.execute-api.us-west-2.amazonaws.com/api/submit'
       const promise = axios.post(URL, data);
-      
+
       const that = this;
 
       promise.then(function(res) {
 
         const data = res.data;
 
+        if (res.data.status == 'fail'){
+          that.errors = res.data.errors;
+          return;
+        }
+
+        debugger;
+
+
         console.log(data);
 
-        that.vendor = data.vendor;
-        that.price= data.price;
+        that.price = data.price;
 
         that.carrierItems.push({
           'price': data.base_price_dict.USM,
@@ -90,20 +99,11 @@ var vm = new Vue({
       });
 
     },
-    validateData: function(formData) {
-      const errors = [];
-      //if (!/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(formData.zipCode)){
-      //errors.push('Invalid Zipcode');
-      //}
-
-      return errors;
-
-    }
   },
   data: function() {
 
     const currentDateTime = new Date();
-    const asString = currentDateTime.toISOString();
+    const asString = currentDateTime.toDateString();
 
     return {
       zipCode: '',
@@ -116,17 +116,22 @@ var vm = new Vue({
       other: '',
       carrierItems: [],
       foodItemsRes: [],
+      errors: [],
       vendor:'',
       price :0,
       custom: [],
       ldSum: 0,
       usmSum: 0,
+      time: {
+        'model': 'time',
+        'value': ''
+      },
       configItems: [{
-          'model': 'zipCode',
-          'label': 'Enter your zipcode.',
-          'inputType': 'text',
-          'value': '60601'
-        },
+        'model': 'zipCode',
+        'label': 'Enter your zipcode.',
+        'inputType': 'text',
+        'value': '60601'
+      },
         {
           'model': 'dateTime',
           'label': 'Enter the date.',
@@ -135,11 +140,11 @@ var vm = new Vue({
         }
       ],
       foodItems: [{
-          'model': 'miniCupcakes',
-          'displayName': 'Mini Cupcakes',
-          'hint': 'In dozens',
-          'value': 0
-        },
+        'model': 'miniCupcakes',
+        'displayName': 'Mini Cupcakes',
+        'hint': 'In dozens',
+        'value': 0
+      },
         {
           'model': 'regularCupcakes',
           'displayName': 'Regular Cupcakes',
