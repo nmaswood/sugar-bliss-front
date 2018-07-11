@@ -98,7 +98,7 @@
 
         <div class='food-items row'>
           <div class='food-item col-md-2' v-for="item in foodItems">
-            <label class='food-item-label'>{{item.displayName}}</label> <input class='food-item-input form-control' type="number" v-model="item.value" v-bind:placeholder="item.hint" min="0">
+            <label class='food-item-label'>{{item.displayName}}</label> <input class='food-item-input form-control' type="number" v-bind:min="item.min" v-bind:min="item.max" v-model="item.value" v-bind:placeholder="item.hint">
           </div>
         </div>
 
@@ -106,92 +106,93 @@
         <div class="text-center submit">
           <button class="btn btn-primary" v-on:click="postInformation">Calculate Carrier and Price</button>
         </div>
+      </div>
 
 
-        <div v-if="carrierItems.length">
-          <h4><u>Base Price</u>
-          </h4>
+      <div v-if="carrierItems.length">
+        <h4><u>Base Price</u>
+        </h4>
 
 
-          <div class="row">
-            <h5 class='col-md-4'>Carrier</h5>
+        <div class="row">
+          <h5 class='col-md-4'>Carrier</h5>
 
 
-            <h5 class='col-md-4'>Price</h5>
-          </div>
-
-
-          <div class='result row' v-for='item in carrierItems'>
-            <label class='category col-md-4'>{{item.carrier}}</label>
-
-            <div class='category-result col-md-4'>
-              ${{item.price}}
-            </div>
-
-
-            <div class='col-md-4' v-if="!item">
-              Could not calculate base price.
-            </div>
-          </div>
+          <h5 class='col-md-4'>Price</h5>
         </div>
 
 
-        <div v-if="foodItemsRes.length">
-          <h4><u>Food Items</u>
-          </h4>
+        <div class='result row' v-for='item in carrierItems'>
+          <label class='category col-md-4'>{{item.carrier}}</label>
 
-
-          <div class="row">
-            <h5 class='col-md-4'>Name</h5>
-
-
-            <h5 class='col-md-4'>USM</h5>
-
-
-            <h5 class='col-md-4'>LS</h5>
+          <div class='category-result col-md-4'>
+            ${{item.price}}
           </div>
 
 
-          <div class='result row' v-for='item in foodItemsRes'>
-            <p class='col-md-4'>{{item.name}}</p>
-
-
-            <p class='col-md-4'>{{item.usm}}</p>
-
-
-            <p class='col-md-4'>{{item.ls}}</p>
+          <div class='col-md-4' v-if="!item">
+            Could not calculate base price.
           </div>
+        </div>
+      </div>
 
 
-          <div class='result row'>
-            <p class='col-md-4'>Total</p>
+      <div v-if="perItemArray.length">
+        <h4><u>Food Items</u>
+        </h4>
 
 
-            <p class='col-md-4'>{{usmSum}}</p>
+        <div class='row'>
+          <h5 class='col-md-4'>Name</h5>
 
 
-            <p class='col-md-4'>{{ldSum}}</p>
-          </div>
+          <h5 class='col-md-4'>USM</h5>
+
+
+          <h5 class='col-md-4'>LS</h5>
         </div>
 
 
-        <div v-if="errors.length">
-          <div class='error' v-for='error in errors'>
-            <p>{{error}}</p>
-          </div>
+        <div class='result row'>
+          <p class='col-md-4'>Base Price</p>
+          <p class='col-md-4'>{{usmBase}}</p>
+          <p class='col-md-4'>{{ldBase}}</p>
         </div>
 
-
-        <div v-if="custom.length">
-          <h4><u>Custom Price Needed For</u>
-          </h4>
+        <div class='result row' v-for='item in perItemArray'>
+          <p class='col-md-4'>{{item.name}}</p>
 
 
-          <div class="row result">
-            <div class='col-md-2' v-for='item in custom'>
-              {{item}}
-            </div>
-          </div>
+          <p class='col-md-4'>{{item.usm}}</p>
+
+
+          <p class='col-md-4'>{{item.ls}}</p>
+        </div>
+
+        <div class='result row'>
+          <p class='col-md-4'>Total</p>
+          <p class='col-md-4'>{{usmSum}}</p>
+          <p class='col-md-4'>{{ldSum}}</p>
+        </div>
+      </div>
+    </div>
+
+
+    <div v-if="errors.length">
+      <div class='error' v-for='error in errors'>
+        <p>{{error}}</p>
+      </div>
+    </div>
+
+
+    <div v-if="custom.length">
+      <h4><u>Custom Price Needed For</u>
+      </h4>
+
+
+      <div class="row result">
+        <div class='col-md-2' v-for='item in custom'>
+          {{item}}
         </div>
       </div>
     </div>
