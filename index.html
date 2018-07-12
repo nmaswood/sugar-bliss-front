@@ -136,6 +136,9 @@
         </div>
       </div>
 
+      <div v-if="loading">
+        <h4>Currently loading...</h4>
+      </div>
 
       <div v-if="perItemArray.length">
         <h4><u>Food Items</u>
@@ -154,7 +157,7 @@
 
 
         <div class='result row'>
-          <p class='col-md-4'>Base Price</p>
+          <p class='col-md-4'>Base Price (with {{multiplier}} multiplier)</p>
           <p class='col-md-4'>{{usmBase}}</p>
           <p class='col-md-4'>{{ldBase}}</p>
         </div>
@@ -171,8 +174,8 @@
 
         <div class='result row'>
           <p class='col-md-4'>Total</p>
-          <p class='col-md-4'>{{usmSum}}</p>
-          <p class='col-md-4'>{{ldSum}}</p>
+          <p class='col-md-4'>${{usmSum}}</p>
+          <p class='col-md-4'>${{ldSum}}</p>
         </div>
       </div>
     </div>

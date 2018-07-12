@@ -36,10 +36,12 @@ var vm = new Vue({
 
       const URL = 'https://z9cherqts7.execute-api.us-west-2.amazonaws.com/api/submit'
       const promise = axios.post(URL, data);
+      this.loading = true;
 
       const that = this;
 
       promise.then(function(res) {
+        that.loading = false;
 
         if (res.data.status == 'fail'){
           that.errors = res.data.errors;
@@ -50,11 +52,13 @@ var vm = new Vue({
         const usm_final = data_body.usm_final;
         const ld_final = data_body.ld_final;
 
+        that.usmSum = usm_final;
+        that.ldSum = ld_final;
+
 
         const base_price_dict = data_body.all.base_price_dict;
         const food_item_dict = data_body.all.food_item_dict;
 
-        //debugger;
 
         const ldBase = base_price_dict.LS;
         const usmBase = base_price_dict.USM;
@@ -121,6 +125,7 @@ var vm = new Vue({
     const asString = currentDateTime.toDateString();
 
     return {
+      loading: false,
       usmBase: 0,
       ldBase: 0,
       multiplier: 0,
