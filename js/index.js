@@ -33,7 +33,7 @@ var vm = new Vue({
 
       const data = this.processInformation();
 
-      const URL = 'https://1kt0lzjnq1.execute-api.us-east-1.amazonaws.com/api/submit'
+      const URL = 'https://20h5r08zva.execute-api.us-east-1.amazonaws.com/api/submit'
       const promise = axios.post(URL, data);
       
       const that = this;
