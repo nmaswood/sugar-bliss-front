@@ -11,63 +11,76 @@ var vm = new Vue({
   methods: {
     processInformation: function() {
 
-      const values = {}
+      const values = {};
 
-      this.foodItems.forEach((x) => values[x.model] = x.value || 0)
-      this.configItems.forEach((x) => values[x.model] = x.value)
+      this.foodItems.forEach((x) => values[x.model] = x.value || 0);
+      this.configItems.forEach((x) => values[x.model] = x.value);
+
+      if (this.time.toString() == '[object Object]'){
+        values.time = '';
+      } else {
+        values.time = this.time;
+      }
 
       return values;
     },
 
     postInformation: function() {
-      const errors = this.validateData(this.form);
-
-      if (errors.length) {
-        console.log(errors);
-        return;
-      }
 
       this.carrierItems = [];
-      this.foodItemsRes = [];
+      this.perItemArray= [];
       this.custom = [];
+      this.errors = [];
 
       const data = this.processInformation();
 
       const URL = 'https://20h5r08zva.execute-api.us-east-1.amazonaws.com/api/submit'
       const promise = axios.post(URL, data);
-      
+
       const that = this;
 
       promise.then(function(res) {
 
-        const data = res.data;
+        if (res.data.status == 'fail'){
+          that.errors = res.data.errors;
+          return;
+        }
+        const data_body = res.data.data;
 
-        console.log(data);
+        const usm_final = data_body.usm_final;
+        const ld_final = data_body.ld_final;
 
-        that.vendor = data.vendor;
-        that.price= data.price;
 
-        that.carrierItems.push({
-          'price': data.base_price_dict.USM,
-          'msg': data.base_price_dict.USM,
-          'carrier': 'USM'
-        });
+        const base_price_dict = data_body.all.base_price_dict;
+        const food_item_dict = data_body.all.food_item_dict;
 
-        that.carrierItems.push({
-          'price': data.base_price_dict.LS,
-          'carrier': 'LD'
-        });
+        //debugger;
+
+        const ldBase = base_price_dict.LS;
+        const usmBase = base_price_dict.USM;
+        const multiplier = base_price_dict.multiplier;
+
+        that.ldBase = ldBase;
+        that.usmBase = usmBase;
+        that.multiplier = multiplier;
+
+
+        const ld_food = food_item_dict.ld;
+        const usm_food = food_item_dict.usm;
+
+
+        const perItemArray = []
 
         const keys = ['cakePops', 'frenchMacarons', 'miniCupcakes', 'other', 'regularCupcakes', 'tiers'];
         const display = ['Cake Pops', 'French Macarons', 'Mini Cupcakes', 'Other', 'Regular Cupcakes', 'Tiers'];
 
-        that.custom = data.food_item_dict.custom;
-
-        that.ldSum = data.food_item_dict.ld_sum;
-        that.usmSum = data.food_item_dict.usm_sum;
 
         for (let i = 0; i < keys.length; i++) {
-          let item = data.food_item_dict.per_item[keys[i]];
+          let key = keys[i];
+          let displayWord = display[i];
+
+          let item = food_item_dict.per_item[key];
+
 
           if (!item._input) {
             continue;
@@ -76,36 +89,41 @@ var vm = new Vue({
           const status = item.status;
           let msg = '';
 
-          if (status == 'LD_NULL' || status == 'USM_NULL' || status == 'LD_AND_USM_NULL') {
-          } else if (status == 'CUSTOM') {
-            msg = 'Price needs to be custom calculated';
+          var ld = '$' + item.ld;
+          var usm = '$'+ item.usm;
+
+          if (status == 'LD_NULL'){
+            ld = 'N/A'
+          } else if (status == 'USM_NULL') {
+            usm = 'N/A'
+          } else if (status == 'LD_AND_USM_NULL'){
+            ld = 'N/A'
+            usm = 'N/A'
+          } else if (status == 'CUSTOM'){
+            ld = 'N/A'
+            usm = 'N/A'
+            msg = `${displayWord} price needs to be custom calculated`;
           }
-          that.foodItemsRes.push({
+          perItemArray.push({
             'name': display[i],
-            'usm': item.usm,
-            'ls': item.ld
+            'usm': usm,
+            'ls': ld
           })
         }
-
+      that.perItemArray = perItemArray;
       });
 
     },
-    validateData: function(formData) {
-      const errors = [];
-      //if (!/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(formData.zipCode)){
-      //errors.push('Invalid Zipcode');
-      //}
-
-      return errors;
-
-    }
   },
   data: function() {
 
     const currentDateTime = new Date();
-    const asString = currentDateTime.toISOString();
+    const asString = currentDateTime.toDateString();
 
     return {
+      usmBase: 0,
+      ldBase: 0,
+      multiplier: 0,
       zipCode: '',
       dateTime: '',
       miniCupcakes: '',
@@ -115,60 +133,77 @@ var vm = new Vue({
       tiers: '',
       other: '',
       carrierItems: [],
-      foodItemsRes: [],
+      perItemArray: [],
+      errors: [],
       vendor:'',
-      price :0,
+      prices : {},
       custom: [],
       ldSum: 0,
       usmSum: 0,
+      time: {
+        'model': 'time',
+        'value': ''
+      },
       configItems: [{
-          'model': 'zipCode',
-          'label': 'Enter your zipcode.',
-          'inputType': 'text',
-          'value': '60601'
-        },
+        'model': 'zipCode',
+        'label': 'Enter your zipcode.',
+        'inputType': 'text',
+        'value': '60601'
+      },
         {
           'model': 'dateTime',
           'label': 'Enter the date.',
-          'inputType': 'datetime-local',
+          'inputType': 'date',
           'value': asString
         }
       ],
       foodItems: [{
-          'model': 'miniCupcakes',
-          'displayName': 'Mini Cupcakes',
-          'hint': 'In dozens',
-          'value': 0
-        },
+        'model': 'miniCupcakes',
+        'displayName': 'Mini Cupcakes',
+        'hint': 'dozens (min 9, max 56)',
+        'value': 0,
+        'min': 8,
+        'max': 56
+      },
         {
           'model': 'regularCupcakes',
           'displayName': 'Regular Cupcakes',
-          'hint': 'In dozens',
-          'value': 0
+          'hint': 'dozens (min 5, max 52) ',
+          'value': 0,
+          'min': 5,
+          'max': 52
         },
         {
           'model': 'cakePops',
           'displayName': 'Cake Pops',
-          'hint': 'In dozens',
-          'value': 0
+          'hint': 'dzn (min 23, max 110)',
+          'value': 0,
+          'min': 23,
+          'max': 110
         },
         {
           'model': 'frenchMacarons',
           'displayName': 'French Macarons',
-          'hint': 'In dozens',
-          'value': 0
+          'hint': 'dozens (min 17, max 79)',
+          'value': 0,
+          'min': 17,
+          'max': 79
         },
         {
           'model': 'tiers',
           'displayName': 'Tiers',
-          'hint': '',
-          'value': 0
+          'hint': '(min 1, max 5)',
+          'value': 0,
+          'min': 1,
+          'max': 5
         },
         {
           'model': 'other',
           'displayName': 'Other',
-          'hint': '',
-          'value': 0
+          'hint': '(min 1, max 5)',
+          'value': 0,
+          'min': 1,
+          'max': 5
         }
       ]
     }
