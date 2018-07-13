@@ -109,36 +109,30 @@
       </div>
 
 
-      <div v-if="carrierItems.length">
-        <h4><u>Base Price</u>
-        </h4>
-
-
-        <div class="row">
-          <h5 class='col-md-4'>Carrier</h5>
-
-
-          <h5 class='col-md-4'>Price</h5>
-        </div>
-
-
-        <div class='result row' v-for='item in carrierItems'>
-          <label class='category col-md-4'>{{item.carrier}}</label>
-
-          <div class='category-result col-md-4'>
-            ${{item.price}}
-          </div>
-
-
-          <div class='col-md-4' v-if="!item">
-            Could not calculate base price.
-          </div>
-        </div>
-      </div>
 
       <div v-if="loading">
         <h4>Currently loading...</h4>
       </div>
+
+
+      <div v-if="carrierPrices.length">
+        <h4><u>Base Price (with {{multiplier}} multiplier)</u>
+        <div class='row'>
+          <h5 class='col-md-3'>Date</h5>
+          <h5 class='col-md-3'>Time</h5>
+          <h5 class='col-md-3'>Carrier</h5>
+          <h5 class='col-md-3'>Price</h5>
+        </div>
+
+        <div class='result row' v-for='item in carrierPrices'>
+          <p class='col-md-3'>{{item.date}}</p>
+          <p class='col-md-3'>{{item.time}}</p>
+          <p class='col-md-3'>{{item.carrier}}</p>
+          <p class='col-md-3'>{{item.price}}</p>
+        </div>
+
+      </div>
+
 
       <div v-if="perItemArray.length">
         <h4><u>Food Items</u>
@@ -156,28 +150,51 @@
         </div>
 
 
-        <div class='result row'>
-          <p class='col-md-4'>Base Price (with {{multiplier}} multiplier)</p>
-          <p class='col-md-4'>{{usmBase}}</p>
-          <p class='col-md-4'>{{ldBase}}</p>
-        </div>
-
         <div class='result row' v-for='item in perItemArray'>
           <p class='col-md-4'>{{item.name}}</p>
-
-
           <p class='col-md-4'>{{item.usm}}</p>
-
-
           <p class='col-md-4'>{{item.ls}}</p>
         </div>
 
+
         <div class='result row'>
           <p class='col-md-4'>Total</p>
-          <p class='col-md-4'>${{usmSum}}</p>
-          <p class='col-md-4'>${{ldSum}}</p>
+          <p class='col-md-4'>{{usm_food}}</p>
+          <p class='col-md-4'>{{ld_food}}</p>
         </div>
+
       </div>
+
+    <div v-if="perItemArray.length && carrierPrices.length"> <h4><u>Best Estimate</u>
+      </h4>
+
+
+      <div class='row'>
+        <h5 class='col-md-2'>Date</h5>
+        <h5 class='col-md-2'>Time</h5>
+        <h5 class='col-md-2'>Carrier</h5>
+        <h5 class='col-md-2'>Base Price</h5>
+        <h5 class='col-md-2'>Total With Food</h5>
+      </div>
+
+      <div class='row'>
+        <p class='col-md-2'>{{bestUsmCarrier.date}}</p>
+        <p class='col-md-2'>{{bestUsmCarrier.time}}</p>
+        <p class='col-md-2'>{{bestUsmCarrier.carrier}}</p>
+        <p class='col-md-2'>{{bestUsmCarrier.price}}</p>
+        <p class='col-md-2'>{{bestUsmPrice}}</p>
+      </div>
+
+      <div class='row'>
+        <p class='col-md-2'>{{bestLdCarrier.date}}</p>
+        <p class='col-md-2'>{{bestLdCarrier.time}}</p>
+        <p class='col-md-2'>{{bestLdCarrier.carrier}}</p>
+        <p class='col-md-2'>{{bestLdCarrier.price}}</p>
+        <p class='col-md-2'>{{bestLdPrice}}</p>
+      </div>
+
+    </div>
+
     </div>
 
 

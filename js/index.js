@@ -27,14 +27,14 @@ var vm = new Vue({
 
     postInformation: function() {
 
-      this.carrierItems = [];
+      this.carrierPrices = [];
       this.perItemArray= [];
       this.custom = [];
       this.errors = [];
 
       const data = this.processInformation();
 
-      const URL = 'https://20h5r08zva.execute-api.us-east-1.amazonaws.com/api/submit'
+      const URL = 'https://z9cherqts7.execute-api.us-west-2.amazonaws.com/api/submit'
       const promise = axios.post(URL, data);
       this.loading = true;
 
@@ -49,28 +49,31 @@ var vm = new Vue({
         }
         const data_body = res.data.data;
 
-        const usm_final = data_body.usm_final;
-        const ld_final = data_body.ld_final;
 
-        that.usmSum = usm_final;
-        that.ldSum = ld_final;
+        const base_price_dict = data_body.base_price_dict;
+        const food_item_dict = data_body.food_item_dict;
 
+        var ls = [];
+        var usm = [];
 
-        const base_price_dict = data_body.all.base_price_dict;
-        const food_item_dict = data_body.all.food_item_dict;
+        that.bestUsmPrice = base_price_dict.best_usm_price;
+        that.bestUsmCarrier = base_price_dict.best_usm;
 
+        that.bestLdPrice = base_price_dict.best_ld_price;
+        that.bestLdCarrier = base_price_dict.best_ld_carrier;
 
-        const ldBase = base_price_dict.LS;
-        const usmBase = base_price_dict.USM;
+        that.carrierPrices = base_price_dict.carrier_prices;
+
         const multiplier = base_price_dict.multiplier;
 
-        that.ldBase = ldBase;
-        that.usmBase = usmBase;
         that.multiplier = multiplier;
 
 
         const ld_food = food_item_dict.ld;
         const usm_food = food_item_dict.usm;
+
+        that.ld_food = ld_food;
+        that.usm_food = usm_food;
 
 
         const perItemArray = []
@@ -125,8 +128,15 @@ var vm = new Vue({
     const asString = currentDateTime.toDateString();
 
     return {
+      bestUsmPrice: 'N/A',
+      bestUsmCarrier: 'N/A',
+      bestLdPrice: 'N/A',
+      bestLdCarrier: 'N/A',
       loading: false,
       usmBase: 0,
+      carrierPrices: [],
+      ld_food: 'N/A',
+      usm_food: 'N/A',
       ldBase: 0,
       multiplier: 0,
       zipCode: '',
@@ -137,14 +147,10 @@ var vm = new Vue({
       frenchMacarons: '',
       tiers: '',
       other: '',
-      carrierItems: [],
       perItemArray: [],
       errors: [],
-      vendor:'',
       prices : {},
       custom: [],
-      ldSum: 0,
-      usmSum: 0,
       time: {
         'model': 'time',
         'value': ''
