@@ -79,7 +79,7 @@ var vm = new Vue({
         const perItemArray = []
 
         const keys = ['cakePops', 'frenchMacarons', 'miniCupcakes', 'other', 'regularCupcakes', 'tiers'];
-        const display = ['Cake Pops', 'French Macarons', 'Mini Cupcakes', 'Other', 'Regular Cupcakes', 'Tiers'];
+        const display = ['Cake Pops', 'French Macarons', 'Mini Cupcakes', 'Additional Bags', 'Regular Cupcakes', 'Tiers'];
 
 
         for (let i = 0; i < keys.length; i++) {
@@ -210,7 +210,7 @@ var vm = new Vue({
         },
         {
           'model': 'other',
-          'displayName': 'Other',
+          'displayName': 'Additional Bags',
           'hint': '(min 1, max 5)',
           'value': 0,
           'min': 1,
