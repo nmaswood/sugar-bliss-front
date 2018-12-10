@@ -98,7 +98,7 @@
 
         <div class='food-items row'>
           <div class='food-item col-md-2' v-for="item in foodItems">
-            <label class='food-item-label'>{{item.displayName}}</label> <input class='food-item-input form-control' type="number" v-bind:min="item.min" v-bind:min="item.max" v-model="item.value" v-bind:placeholder="item.hint">
+            <label class='food-item-label'>{{item.displayName}}</label> <input class='food-item-input form-control' type="number" v-bind:max="item.max" v-model="item.value" v-bind:placeholder="item.hint">
           </div>
         </div>
 

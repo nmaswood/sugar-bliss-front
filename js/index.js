@@ -171,7 +171,7 @@ var vm = new Vue({
       foodItems: [{
         'model': 'miniCupcakes',
         'displayName': 'Mini Cupcakes',
-        'hint': 'dozens (min 9, max 56)',
+        'hint': 'dozens (max 56)',
         'value': 0,
         'min': 8,
         'max': 56
@@ -179,7 +179,7 @@ var vm = new Vue({
         {
           'model': 'regularCupcakes',
           'displayName': 'Regular Cupcakes',
-          'hint': 'dozens (min 5, max 52) ',
+          'hint': 'dozens (max 52) ',
           'value': 0,
           'min': 5,
           'max': 52
@@ -187,7 +187,7 @@ var vm = new Vue({
         {
           'model': 'cakePops',
           'displayName': 'Cake Pops',
-          'hint': 'dzn (min 23, max 110)',
+          'hint': 'dzn (max 110)',
           'value': 0,
           'min': 23,
           'max': 110
@@ -195,7 +195,7 @@ var vm = new Vue({
         {
           'model': 'frenchMacarons',
           'displayName': 'French Macarons',
-          'hint': 'dozens (min 17, max 79)',
+          'hint': 'dozens ( max 79)',
           'value': 0,
           'min': 17,
           'max': 79
@@ -203,7 +203,7 @@ var vm = new Vue({
         {
           'model': 'tiers',
           'displayName': 'Tiers',
-          'hint': '(min 1, max 5)',
+          'hint': '(max 5)',
           'value': 0,
           'min': 1,
           'max': 5
@@ -211,7 +211,7 @@ var vm = new Vue({
         {
           'model': 'other',
           'displayName': 'Additional Bags',
-          'hint': '(min 1, max 5)',
+          'hint': '(max 5)',
           'value': 0,
           'min': 1,
           'max': 5
